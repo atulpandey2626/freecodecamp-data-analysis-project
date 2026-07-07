@@ -1,0 +1,31 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+from scipy.stats import linregress
+import numpy as np
+
+# 1
+df = pd.read_csv('epa-sea-level.csv')
+
+# 2
+plt.figure(figsize=(10, 6))
+plt.scatter(df['Year'], df['CSIRO Adjusted Sea Level'], color='blue', s=10)
+
+# 3
+res_all = linregress(df['Year'], df['CSIRO Adjusted Sea Level'])
+years_all = np.arange(df['Year'].min(), 2051)
+plt.plot(years_all, res_all.intercept + res_all.slope * years_all, color='red')
+
+# 4
+df_recent = df[df['Year'] >= 2000]
+res_recent = linregress(df_recent['Year'], df_recent['CSIRO Adjusted Sea Level'])
+years_recent = np.arange(2000, 2051)
+plt.plot(years_recent, res_recent.intercept + res_recent.slope * years_recent, color='green')
+
+# 5
+plt.xlabel('Year')
+plt.ylabel('Sea Level (inches)')
+plt.title('Rise in Sea Level')
+
+# Save and return figure (matches freeCodeCamp template expectations)
+plt.savefig('sea_level_plot.png')
+fig = plt.gca()
